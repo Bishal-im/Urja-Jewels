@@ -1,0 +1,152 @@
+import type { TargetAndTransition } from 'framer-motion'
+
+// ---------------------------------------------------------------------------
+// Interfaces
+// ---------------------------------------------------------------------------
+
+export interface Product {
+  id: string
+  slug: string
+  name: string
+  price: number // in USD cents, e.g. 450000 = $4,500
+  category: 'rings' | 'necklaces' | 'bracelets' | 'earrings'
+  description: string
+  imageSrc: string // path relative to /public
+  featured: boolean
+}
+
+export interface SiteConfig {
+  name: string
+  marqueeItems: string[]
+}
+
+export interface NavItem {
+  label: string
+  href: string
+}
+
+export interface AnimationVariant {
+  hidden: TargetAndTransition
+  visible: TargetAndTransition
+}
+
+export interface FrameAnimationState {
+  frames: HTMLImageElement[]
+  progress: number // 0–1, fraction of frames loaded
+  ready: boolean   // true when all frames have resolved
+}
+
+// ---------------------------------------------------------------------------
+// Site constants
+// ---------------------------------------------------------------------------
+
+export const SITE_NAME = 'Urja Jewels'
+
+export const MARQUEE_TAGS: string[] = [
+  'Crafted for Eternity',
+  'Est. 2024',
+  'Urja Jewels',
+  'Handcrafted with Love',
+]
+
+export const NAV_ITEMS: NavItem[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Collection', href: '/collection' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+]
+
+// ---------------------------------------------------------------------------
+// Product data
+// ---------------------------------------------------------------------------
+
+export const PRODUCTS: Product[] = [
+  {
+    id: 'p1',
+    slug: 'eternal-rose-ring',
+    name: 'Eternal Rose Ring',
+    price: 450000, // $4,500
+    category: 'rings',
+    description:
+      'A timeless solitaire set in 18k rose gold, featuring a cushion-cut diamond of exceptional clarity. Each stone is hand-selected by our master gemologists in Paris.',
+    imageSrc: '/frames/Yellow_gold_diamond/Yellow_gold_diamond_engagement_ring_202605130931_010.webp',
+    featured: true,
+  },
+  {
+    id: 'p2',
+    slug: 'celestial-diamond-necklace',
+    name: 'Celestial Diamond Necklace',
+    price: 780000, // $7,800
+    category: 'necklaces',
+    description:
+      'A constellation of pavé-set diamonds suspended on a delicate 18k white gold chain. Inspired by the night sky above Urja Jewels\' founding studio.',
+    imageSrc: '/frames/Gold_dome_ring/Gold_dome_ring_on_stone_202605130855_020.webp',
+    featured: true,
+  },
+  {
+    id: 'p3',
+    slug: 'heritage-gold-bracelet',
+    name: 'Heritage Gold Bracelet',
+    price: 320000, // $3,200
+    category: 'bracelets',
+    description:
+      'A supple link bracelet in 18k yellow gold, each link hand-polished to a mirror finish. A modern interpretation of a design first crafted in 1923.',
+    imageSrc: '/frames/Yellow_gold_diamond/Yellow_gold_diamond_engagement_ring_202605130931_030.webp',
+    featured: true,
+  },
+  {
+    id: 'p4',
+    slug: 'lumiere-pearl-earrings',
+    name: 'Lumière Pearl Earrings',
+    price: 195000, // $1,950
+    category: 'earrings',
+    description:
+      'South Sea pearls of exceptional lustre, each matched for size and orient, set in 18k white gold drops with a single brilliant-cut diamond accent.',
+    imageSrc: '/frames/Gold_dome_ring/Gold_dome_ring_on_stone_202605130855_040.webp',
+    featured: true,
+  },
+  {
+    id: 'p5',
+    slug: 'soleil-sapphire-ring',
+    name: 'Soleil Sapphire Ring',
+    price: 620000, // $6,200
+    category: 'rings',
+    description:
+      'A vivid cornflower-blue sapphire from Kashmir, encircled by a halo of round brilliant diamonds in a platinum setting. Accompanied by a gemological certificate.',
+    imageSrc: '/frames/Yellow_gold_diamond/Yellow_gold_diamond_engagement_ring_202605130931_050.webp',
+    featured: false,
+  },
+  {
+    id: 'p6',
+    slug: 'arc-de-triomphe-bracelet',
+    name: 'Arc de Triomphe Bracelet',
+    price: 540000, // $5,400
+    category: 'bracelets',
+    description:
+      'Architectural bangle in 18k rose gold, its surface engraved with the geometric motifs that define Urja Jewels\' iconic Art Deco heritage.',
+    imageSrc: '/frames/Gold_dome_ring/Gold_dome_ring_on_stone_202605130855_060.webp',
+    featured: false,
+  },
+  {
+    id: 'p7',
+    slug: 'jardin-emerald-necklace',
+    name: 'Jardin Emerald Necklace',
+    price: 1250000, // $12,500
+    category: 'necklaces',
+    description:
+      'Colombian emeralds of vivid green, set in a graduated collar of 18k yellow gold with diamond-set leaf motifs. A statement piece for the most discerning collector.',
+    imageSrc: '/frames/Yellow_gold_diamond/Yellow_gold_diamond_engagement_ring_202605130931_070.webp',
+    featured: false,
+  },
+  {
+    id: 'p8',
+    slug: 'etoile-diamond-earrings',
+    name: 'Étoile Diamond Earrings',
+    price: 385000, // $3,850
+    category: 'earrings',
+    description:
+      'Star-shaped studs pavé-set with round brilliant diamonds in 18k white gold. Versatile enough for day, luminous enough for evening.',
+    imageSrc: '/frames/Gold_dome_ring/Gold_dome_ring_on_stone_202605130855_080.webp',
+    featured: false,
+  },
+]

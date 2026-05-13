@@ -1,0 +1,168 @@
+'use client'
+
+import { useRef, useEffect, useCallback } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useFrameAnimation } from '@/hooks/useFrameAnimation'
+
+gsap.registerPlugin(ScrollTrigger)
+
+interface ScrollCanvasAnimationProps {
+  totalFrames: number
+  basePath: string
+  getFileName: (index: number) => string
+  scrollDistance?: number // in viewport heights (vh)
+  className?: string
+  onLoadProgress?: (progress: number) => void
+  onLoadComplete?: () => void
+  ariaLabel?: string
+  portrait?: boolean // renders canvas in a centered portrait card
+}
+
+export default function ScrollCanvasAnimation({
+  totalFrames,
+  basePath,
+  getFileName,
+  scrollDistance = 4,
+  className = '',
+  onLoadProgress,
+  onLoadComplete,
+  ariaLabel = 'Scroll animation',
+  portrait = false,
+}: ScrollCanvasAnimationProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const currentFrameRef = useRef(0)
+
+  const memoizedGetFileName = useCallback(getFileName, [])
+
+  const { frames, progress, ready } = useFrameAnimation(
+    totalFrames,
+    basePath,
+    memoizedGetFileName
+  )
+
+  const drawFrame = useCallback(
+    (index: number) => {
+      const img = frames[index]
+      const canvas = canvasRef.current
+      if (!canvas || !img) return
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+      const { width: cw, height: ch } = canvas
+      const { naturalWidth: iw, naturalHeight: ih } = img
+      if (!iw || !ih) return
+
+      if (portrait) {
+        // object-fit: contain — image fills the portrait card without clipping
+        const scale = Math.min(cw / iw, ch / ih)
+        const x = (cw - iw * scale) / 2
+        const y = (ch - ih * scale) / 2
+        ctx.clearRect(0, 0, cw, ch)
+        ctx.drawImage(img, x, y, iw * scale, ih * scale)
+      } else {
+        // object-fit: cover — fills full-screen canvas
+        const scale = Math.max(cw / iw, ch / ih)
+        const x = (cw - iw * scale) / 2
+        const y = (ch - ih * scale) / 2
+        ctx.clearRect(0, 0, cw, ch)
+        ctx.drawImage(img, x, y, iw * scale, ih * scale)
+      }
+    },
+    [frames, portrait],
+  )
+
+  useEffect(() => {
+    if (onLoadProgress) onLoadProgress(progress)
+  }, [progress, onLoadProgress])
+
+  useEffect(() => {
+    if (ready && onLoadComplete) onLoadComplete()
+  }, [ready, onLoadComplete])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const updateSize = () => {
+      if (portrait) {
+        // Portrait card: 45% of viewport height as width, 80% of viewport height as height
+        const h = Math.round(window.innerHeight * 0.8)
+        const w = Math.round(h * 0.65) // ~2:3 portrait ratio
+        canvas.width = w
+        canvas.height = h
+      } else {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+      }
+      drawFrame(currentFrameRef.current)
+    }
+
+    updateSize()
+
+    const observer = new ResizeObserver(updateSize)
+    observer.observe(document.documentElement)
+
+    return () => observer.disconnect()
+  }, [drawFrame, portrait])
+
+  useEffect(() => {
+    if (!ready || !wrapperRef.current) return
+
+    drawFrame(0)
+
+    const trigger = ScrollTrigger.create({
+      trigger: wrapperRef.current,
+      start: 'top top',
+      end: `+=${window.innerHeight * scrollDistance}`,
+      pin: true,
+      scrub: 0.5,
+      onUpdate: (self) => {
+        const index = Math.round(self.progress * (totalFrames - 1))
+        currentFrameRef.current = index
+        drawFrame(index)
+      },
+    })
+
+    return () => trigger.kill()
+  }, [ready, drawFrame, totalFrames, scrollDistance])
+
+  if (portrait) {
+    return (
+      // Full-screen wrapper for scroll pinning
+      <div ref={wrapperRef} className={`relative w-full h-screen flex items-center justify-center ${className}`}>
+        {/* Subtle background behind the portrait card */}
+        <div className="absolute inset-0 bg-[#0a0805]" />
+
+        {/* Portrait card — shadow + subtle border for depth */}
+        <div
+          className="relative z-10 flex items-center justify-center"
+          style={{
+            height: '80vh',
+            width: 'calc(80vh * 0.65)',
+            maxWidth: '90vw',
+            boxShadow: '0 32px 96px rgba(0,0,0,0.85), 0 0 0 1px rgba(212,175,55,0.15)',
+            borderRadius: '4px',
+          }}
+        >
+          <canvas
+            ref={canvasRef}
+            className="w-full h-full rounded-[4px]"
+            style={{ display: 'block' }}
+            aria-label={ariaLabel}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div ref={wrapperRef} className={`relative w-full h-screen ${className}`}>
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        aria-label={ariaLabel}
+      />
+    </div>
+  )
+}

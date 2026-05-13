@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Color system */
+  --color-ivory: #FAFAF7;
+  --color-obsidian: #1A1A1A;
+  --color-gold: #B8973A;
+  --color-mink: #2C2C2C;
+  --color-stone: #7A7A6E;
+  --color-pearl: #FFFFFF;
+  --color-fog: #E8E8E4;
+
+  /* Typography */
+  --font-display: var(--font-cormorant), serif;
+  --font-body: var(--font-jost), sans-serif;
+
+  /* Custom breakpoints — Requirement 12.1 (480px breakpoint) */
+  --breakpoint-xs: 480px;
+}
+
+/* Custom cursor — hide the native cursor site-wide */
+body {
+  cursor: none;
+}
+
+/* Focus-visible outline using the gold design token */
+:focus-visible {
+  outline: 2px solid #B8973A;
+  outline-offset: 2px;
+}
