@@ -17,6 +17,7 @@ interface ScrollCanvasAnimationProps {
   onLoadComplete?: () => void
   ariaLabel?: string
   portrait?: boolean // renders canvas in a centered portrait card
+  children?: React.ReactNode
 }
 
 export default function ScrollCanvasAnimation({
@@ -29,6 +30,7 @@ export default function ScrollCanvasAnimation({
   onLoadComplete,
   ariaLabel = 'Scroll animation',
   portrait = false,
+  children,
 }: ScrollCanvasAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -116,7 +118,7 @@ export default function ScrollCanvasAnimation({
       start: 'top top',
       end: `+=${window.innerHeight * scrollDistance}`,
       pin: true,
-      scrub: 0.5,
+      scrub: 1.5,
       onUpdate: (self) => {
         const index = Math.round(self.progress * (totalFrames - 1))
         currentFrameRef.current = index
@@ -163,6 +165,7 @@ export default function ScrollCanvasAnimation({
         className="absolute inset-0 w-full h-full"
         aria-label={ariaLabel}
       />
+      {children}
     </div>
   )
 }

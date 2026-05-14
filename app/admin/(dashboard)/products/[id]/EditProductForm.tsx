@@ -1,19 +1,27 @@
 'use client'
 
-import { addProduct } from '@/app/actions/products'
+import { useState } from 'react'
+import { editProduct } from '@/app/actions/products'
 import Link from 'next/link'
-import { useActionState, useState } from 'react'
 import { MdCloudUpload, MdChevronRight, MdClose } from 'react-icons/md'
+import { Product } from '@/lib/constants'
 
-export default function NewProductPage() {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  
-  const [state, formAction, pending] = useActionState(
-    async (prevState: any, formData: FormData) => {
-      await addProduct(formData)
-    },
-    null
-  )
+interface EditProductFormProps {
+  product: Product
+}
+
+export default function EditProductForm({ product }: EditProductFormProps) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(product.imageSrc)
+  const [isPending, setIsPending] = useState(false)
+
+  const updateProductAction = async (formData: FormData) => {
+    setIsPending(true)
+    try {
+      await editProduct(product.id, formData)
+    } finally {
+      setIsPending(false)
+    }
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -31,13 +39,13 @@ export default function NewProductPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto pb-12">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#0f172a]">Add New Product</h1>
-        <p className="text-[#64748b] mt-1">Create a new product listing by filling out the information below.</p>
+        <h1 className="text-3xl font-bold text-[#0f172a]">Edit Product</h1>
+        <p className="text-[#64748b] mt-1">Refine the details of your exquisite piece.</p>
       </div>
 
-      <form action={formAction} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <form action={updateProductAction} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Product Details */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-8 rounded-2xl border border-[#e5eeff] shadow-sm space-y-6">
@@ -50,7 +58,7 @@ export default function NewProductPage() {
                 name="name"
                 id="name"
                 required
-                placeholder="e.g. Premium Wireless Headphones"
+                defaultValue={product.name}
                 className="w-full bg-white border border-[#e5eeff] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] transition-all outline-none"
               />
             </div>
@@ -64,7 +72,7 @@ export default function NewProductPage() {
                 name="slug"
                 id="slug"
                 required
-                placeholder="product-name-slug"
+                defaultValue={product.slug}
                 className="w-full bg-white border border-[#e5eeff] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] transition-all outline-none"
               />
             </div>
@@ -78,7 +86,7 @@ export default function NewProductPage() {
                 name="description"
                 rows={6}
                 required
-                placeholder="Describe the product details, features, and benefits..."
+                defaultValue={product.description}
                 className="w-full bg-white border border-[#e5eeff] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] transition-all outline-none resize-none"
               />
             </div>
@@ -93,6 +101,7 @@ export default function NewProductPage() {
                     id="category"
                     name="category"
                     required
+                    defaultValue={product.category}
                     className="w-full bg-white border border-[#e5eeff] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] transition-all outline-none appearance-none cursor-pointer"
                   >
                     <option value="rings">Rings</option>
@@ -115,11 +124,11 @@ export default function NewProductPage() {
                     name="price"
                     id="price"
                     required
-                    placeholder="0.00"
+                    defaultValue={product.price}
                     className="w-full bg-white border border-[#e5eeff] rounded-xl pl-8 pr-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] transition-all outline-none"
                   />
                 </div>
-                <p className="text-[10px] text-[#94a3b8] mt-1 ml-1">Enter price in cents (e.g. 1000 for $10.00)</p>
+                <p className="text-[10px] text-[#94a3b8] mt-1 ml-1">Price in cents (e.g. 1000 for $10.00)</p>
               </div>
             </div>
           </div>
@@ -136,7 +145,6 @@ export default function NewProductPage() {
                 name="image"
                 id="image"
                 accept="image/*"
-                required
                 onChange={handleImageChange}
                 className="absolute inset-0 opacity-0 cursor-pointer z-20"
               />
@@ -177,7 +185,7 @@ export default function NewProductPage() {
               <label className="flex items-center justify-between p-4 rounded-xl border border-[#e5eeff] cursor-pointer hover:bg-[#f8f9ff] transition-all group has-[:checked]:border-[#4f46e5] has-[:checked]:bg-[#4f46e5]/5">
                 <div className="flex items-center gap-3">
                   <div className="relative flex items-center justify-center">
-                    <input type="checkbox" name="featured" value="true" className="peer opacity-0 absolute" defaultChecked />
+                    <input type="checkbox" name="featured" value="true" className="peer opacity-0 absolute" defaultChecked={product.featured} />
                     <div className="w-10 h-6 bg-[#cbd5e1] rounded-full peer-checked:bg-[#4f46e5] transition-all relative after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
                   </div>
                   <span className="text-sm font-bold text-[#0f172a]">Featured Product</span>
@@ -197,10 +205,10 @@ export default function NewProductPage() {
             </Link>
             <button
               type="submit"
-              disabled={pending}
+              disabled={isPending}
               className="flex-1 bg-[#3525cd] text-white font-bold py-3 px-6 rounded-xl hover:bg-[#4338ca] transition-all shadow-lg shadow-[#4f46e5]/20 disabled:opacity-50 text-sm"
             >
-              {pending ? 'Saving...' : 'Save Product'}
+              {isPending ? 'Saving...' : 'Update Product'}
             </button>
           </div>
         </div>

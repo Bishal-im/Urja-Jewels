@@ -67,13 +67,14 @@ export default async function SiteContentPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-[#0f172a] mb-2">Background Image URL</label>
+                  <label className="block text-sm font-bold text-[#0f172a] mb-2">Background Image</label>
                   <input
-                    type="text"
-                    name="imageSrc"
-                    defaultValue={heroQuote.imageSrc}
+                    type="file"
+                    name="imageFile"
+                    accept="image/*"
                     className="w-full bg-white border border-[#e5eeff] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] outline-none mb-4"
                   />
+                  <input type="hidden" name="currentImageSrc" defaultValue={heroQuote.imageSrc} />
                   <div className="aspect-video rounded-xl overflow-hidden border border-[#e5eeff] bg-[#f8f9ff] relative">
                     {heroQuote.imageSrc && (
                       <img src={heroQuote.imageSrc} alt="Preview" className="w-full h-full object-cover" />
@@ -117,8 +118,14 @@ export default async function SiteContentPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-[#0f172a] mb-2">Hero Image URL</label>
-                  <input type="text" name="heroImageSrc" defaultValue={aboutPage.hero.imageSrc} className="w-full bg-white border border-[#e5eeff] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] outline-none mb-4" />
+                  <label className="block text-sm font-bold text-[#0f172a] mb-2">Hero Image</label>
+                  <input
+                    type="file"
+                    name="heroImageFile"
+                    accept="image/*"
+                    className="w-full bg-white border border-[#e5eeff] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#4f46e5]/20 focus:border-[#4f46e5] outline-none mb-4"
+                  />
+                  <input type="hidden" name="currentHeroImageSrc" defaultValue={aboutPage.hero.imageSrc} />
                   <div className="aspect-[4/5] w-48 rounded-xl overflow-hidden border border-[#e5eeff] bg-[#f8f9ff] relative mx-auto">
                     {aboutPage.hero.imageSrc && <img src={aboutPage.hero.imageSrc} alt="Hero" className="w-full h-full object-cover" />}
                   </div>

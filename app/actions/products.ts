@@ -5,13 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import path from 'path'
 import { Product } from '@/lib/constants'
-import { v2 as cloudinary } from 'cloudinary'
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+import { uploadToCloudinary } from '@/lib/cloudinary'
 
 export async function getProductsAction() {
   const products = await getProducts()
@@ -22,29 +16,7 @@ export async function getProductBySlugAction(slug: string) {
   return await getStaticProductBySlug(slug)
 }
 
-// Utility to handle file upload using Cloudinary
-async function handleImageUpload(imageFile: File | null): Promise<string | null> {
-  if (!imageFile || imageFile.size === 0) return null
-  
-  const arrayBuffer = await imageFile.arrayBuffer()
-  const buffer = Buffer.from(arrayBuffer)
-  
-  return new Promise((resolve) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: 'urja-jewels/products' },
-      (error, result) => {
-        if (error) {
-          console.error('Cloudinary upload error:', error)
-          resolve(null)
-        } else {
-          resolve(result?.secure_url || null)
-        }
-      }
-    )
-    
-    uploadStream.end(buffer)
-  })
-}
+
 
 export async function addProduct(formData: FormData) {
   const name = formData.get('name') as string
@@ -52,10 +24,10 @@ export async function addProduct(formData: FormData) {
   const price = parseInt(formData.get('price') as string, 10)
   const category = formData.get('category') as Product['category']
   const description = formData.get('description') as string
-  const featured = formData.get('featured') === 'on'
+  const featured = formData.get('featured') === 'true' || formData.get('featured') === 'on'
   const imageFile = formData.get('image') as File | null
   
-  const imageSrc = await handleImageUpload(imageFile) || '' // Fallback to empty if no image
+  const imageSrc = await uploadToCloudinary(imageFile, 'urja-jewels/products') || '' // Fallback to empty if no image
   
   await createProduct({
     name,
@@ -79,7 +51,7 @@ export async function editProduct(id: string, formData: FormData) {
   const price = parseInt(formData.get('price') as string, 10)
   const category = formData.get('category') as Product['category']
   const description = formData.get('description') as string
-  const featured = formData.get('featured') === 'on'
+  const featured = formData.get('featured') === 'true' || formData.get('featured') === 'on'
   const imageFile = formData.get('image') as File | null
   
   const updates: Partial<Product> = {
@@ -92,7 +64,7 @@ export async function editProduct(id: string, formData: FormData) {
   }
   
   if (imageFile && imageFile.size > 0) {
-    const uploadedPath = await handleImageUpload(imageFile)
+    const uploadedPath = await uploadToCloudinary(imageFile, 'urja-jewels/products')
     if (uploadedPath) {
       updates.imageSrc = uploadedPath
     }

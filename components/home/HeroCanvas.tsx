@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react'
 import ScrollCanvasAnimation from '@/components/ui/ScrollCanvasAnimation'
+import HeroOverlay from './HeroOverlay'
 
 interface HeroCanvasProps {
   onLoadProgress: (progress: number) => void
@@ -18,10 +19,12 @@ export default function HeroCanvas({ onLoadProgress, onLoadComplete }: HeroCanva
       totalFrames={120}
       basePath="/frames/ezgif-split"
       getFileName={getFileName}
-      scrollDistance={4}
+      scrollDistance={8}
       onLoadProgress={onLoadProgress}
       onLoadComplete={onLoadComplete}
       ariaLabel="Cinematic jewelry showcase animation"
-    />
+    >
+      <HeroOverlay />
+    </ScrollCanvasAnimation>
   )
 }
