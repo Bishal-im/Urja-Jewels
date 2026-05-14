@@ -1,14 +1,24 @@
-import { PRODUCTS } from '@/lib/constants'
+import { Product } from '@/lib/constants'
 import SectionTitle from '@/components/ui/SectionTitle'
 import GoldDivider from '@/components/ui/GoldDivider'
 import ProductCard from '@/components/home/ProductCard'
+import { useEffect, useState } from 'react'
+import { getProductsAction } from '@/app/actions/products'
 
 // Asymmetric 12-column grid column spans for featured cards (desktop)
 // Pattern: 7-5, 5-7 alternating
 const COL_SPANS = ['md:col-span-7', 'md:col-span-5', 'md:col-span-5', 'md:col-span-7']
 
 export default function FeaturedCollection() {
-  const featured = PRODUCTS.filter((p) => p.featured)
+  const [featured, setFeatured] = useState<Product[]>([])
+
+  useEffect(() => {
+    async function load() {
+      const all = await getProductsAction()
+      setFeatured(all.filter(p => p.featured))
+    }
+    load()
+  }, [])
 
   return (
     <section className="bg-ivory py-24 px-8">

@@ -41,6 +41,11 @@ export default function Navbar() {
     }
   }, [mobileOpen])
 
+  // Hide the global navbar on admin routes
+  if (pathname.startsWith('/admin')) {
+    return null
+  }
+
   return (
     <>
       {/* ------------------------------------------------------------------ */}
@@ -58,7 +63,12 @@ export default function Navbar() {
           {/* Left — brand name */}
           <Link
             href="/"
-            className="font-display text-xl text-ivory tracking-widest uppercase hover:text-gold transition-colors duration-200"
+            className={[
+              'font-display text-xl tracking-widest uppercase transition-colors duration-200',
+              scrolled || pathname === '/'
+                ? 'text-ivory hover:text-gold'
+                : 'text-obsidian hover:text-gold',
+            ].join(' ')}
             aria-label={`${SITE_NAME} — home`}
           >
             {SITE_NAME}
@@ -71,6 +81,7 @@ export default function Navbar() {
           >
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href
+              const isHome = pathname === '/'
               return (
                 <Link
                   key={item.href}
@@ -79,7 +90,7 @@ export default function Navbar() {
                     'font-body text-sm uppercase tracking-widest transition-colors duration-200',
                     isActive
                       ? 'text-gold underline underline-offset-4'
-                      : 'text-fog hover:text-ivory',
+                      : (scrolled || isHome ? 'text-fog hover:text-ivory' : 'text-stone hover:text-obsidian'),
                   ].join(' ')}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -93,7 +104,10 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             {/* Cart icon */}
             <button
-              className="text-fog hover:text-ivory transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2"
+              className={[
+                'transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2',
+                scrolled || pathname === '/' ? 'text-fog hover:text-ivory' : 'text-stone hover:text-obsidian',
+              ].join(' ')}
               aria-label="Open cart"
             >
               <CartIcon />
@@ -101,7 +115,10 @@ export default function Navbar() {
 
             {/* Hamburger — mobile only */}
             <button
-              className="md:hidden text-fog hover:text-ivory transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2"
+              className={[
+                'md:hidden transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2',
+                scrolled || pathname === '/' ? 'text-fog hover:text-ivory' : 'text-stone hover:text-obsidian',
+              ].join(' ')}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
               aria-controls="mobile-drawer"

@@ -3,10 +3,11 @@ import PageTransition from '@/components/layout/PageTransition'
 import ProductImageGallery from '@/components/product/ProductImageGallery'
 import ProductInfo from '@/components/product/ProductInfo'
 import RelatedProducts from '@/components/product/RelatedProducts'
-import { PRODUCTS } from '@/lib/constants'
+import { getProducts, getProductBySlug, getStaticProducts, getStaticProductBySlug } from '@/lib/db'
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }))
+export async function generateStaticParams() {
+  const products = await getStaticProducts()
+  return products.map((p) => ({ slug: p.slug }))
 }
 
 export default async function ProductPage({
@@ -15,7 +16,7 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const product = PRODUCTS.find((p) => p.slug === slug)
+  const product = await getStaticProductBySlug(slug)
 
   if (!product) {
     notFound()

@@ -67,14 +67,14 @@ export default function CustomCursor() {
 
     const handleMouseEnter = (e: MouseEvent) => {
       const target = e.target as Element
-      if (target.closest('[data-cursor-hover]')) {
+      if (target && typeof target.closest === 'function' && target.closest('[data-cursor-hover]')) {
         setHovered(true)
       }
     }
 
     const handleMouseLeave = (e: MouseEvent) => {
       const target = e.target as Element
-      if (target.closest('[data-cursor-hover]')) {
+      if (target && typeof target.closest === 'function' && target.closest('[data-cursor-hover]')) {
         setHovered(false)
       }
     }

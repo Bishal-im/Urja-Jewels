@@ -1,4 +1,4 @@
-import { PRODUCTS } from '@/lib/constants'
+import { getStaticProducts } from '@/lib/db'
 import type { Product } from '@/lib/constants'
 import ProductCard from '@/components/home/ProductCard'
 import SectionTitle from '@/components/ui/SectionTitle'
@@ -9,8 +9,9 @@ interface RelatedProductsProps {
   category: Product['category']
 }
 
-export default function RelatedProducts({ currentSlug, category }: RelatedProductsProps) {
-  const related = PRODUCTS
+export default async function RelatedProducts({ currentSlug, category }: RelatedProductsProps) {
+  const products = await getStaticProducts()
+  const related = products
     .filter((p) => p.category === category && p.slug !== currentSlug)
     .slice(0, 4)
 

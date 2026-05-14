@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { SITE_NAME } from '@/lib/constants'
 
 const collectionsLinks = [
@@ -18,6 +21,13 @@ const linkClasses =
   'text-fog hover:text-gold transition-colors font-body text-sm'
 
 export default function Footer() {
+  const pathname = usePathname()
+
+  // Hide the global footer on admin routes
+  if (pathname.startsWith('/admin')) {
+    return null
+  }
+
   return (
     <footer className="bg-obsidian text-fog py-16 px-8">
       {/* Top: brand name + tagline */}
