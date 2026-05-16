@@ -8,11 +8,13 @@ const nextConfig: NextConfig = {
     // remotePatterns / localPatterns once real assets are in place.
     unoptimized: true,
   },
-  serverActions: {
-    bodySizeLimit: '10mb',
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
   },
   turbopack: {
-    root: '.',
+    root: process.cwd(),
   },
 };
 
