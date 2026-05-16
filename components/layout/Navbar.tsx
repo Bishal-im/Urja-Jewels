@@ -100,23 +100,11 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right — cart icon + hamburger */}
-          <div className="flex items-center gap-4">
-            {/* Cart icon */}
+          {/* Right — mobile hamburger only */}
+          <div className="flex md:hidden items-center gap-4">
             <button
               className={[
                 'transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2',
-                scrolled || pathname === '/' ? 'text-fog hover:text-ivory' : 'text-stone hover:text-obsidian',
-              ].join(' ')}
-              aria-label="Open cart"
-            >
-              <CartIcon />
-            </button>
-
-            {/* Hamburger — mobile only */}
-            <button
-              className={[
-                'md:hidden transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-gold focus-visible:outline-offset-2',
                 scrolled || pathname === '/' ? 'text-fog hover:text-ivory' : 'text-stone hover:text-obsidian',
               ].join(' ')}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -219,26 +207,6 @@ export default function Navbar() {
 // Icon sub-components
 // ---------------------------------------------------------------------------
 
-function CartIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <path d="M16 10a4 4 0 0 1-8 0" />
-    </svg>
-  )
-}
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (

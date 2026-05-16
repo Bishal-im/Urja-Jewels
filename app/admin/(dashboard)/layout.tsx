@@ -9,12 +9,7 @@ import {
   MdInventory2, 
   MdLanguage, 
   MdLogout, 
-  MdShoppingCart, 
-  MdPeople, 
-  MdBarChart,
   MdSearch,
-  MdNotificationsNone,
-  MdSettings,
   MdEditNote
 } from 'react-icons/md'
 
@@ -25,9 +20,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     { label: 'Dashboard', href: '/admin', icon: MdDashboard },
     { label: 'Products', href: '/admin/products', icon: MdInventory2 },
     { label: 'Site Content', href: '/admin/site-content', icon: MdEditNote },
-    { label: 'Orders', href: '/admin/orders', icon: MdShoppingCart },
-    { label: 'Customers', href: '/admin/customers', icon: MdPeople },
-    { label: 'Analytics', href: '/admin/analytics', icon: MdBarChart },
   ]
 
   // Mock breadcrumbs based on pathname
@@ -123,16 +115,14 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 className="bg-[#f1f5f9] border-none rounded-lg pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-[#4f46e5]/20 focus:bg-white transition-all"
               />
             </div>
-            <button className="text-[#64748b] hover:text-[#0f172a] transition-colors relative">
-              <MdNotificationsNone className="text-2xl" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-            </button>
-            <button className="text-[#64748b] hover:text-[#0f172a] transition-colors">
-              <MdSettings className="text-2xl" />
-            </button>
-            <div className="w-10 h-10 rounded-full bg-[#4f46e5] flex items-center justify-center text-white font-bold text-sm cursor-pointer hover:bg-[#4338ca] transition-colors">
+
+            <Link 
+              href="/admin"
+              className="w-10 h-10 rounded-full bg-[#4f46e5] flex items-center justify-center text-white font-bold text-sm cursor-pointer hover:bg-[#4338ca] transition-colors"
+              title="Profile"
+            >
               AD
-            </div>
+            </Link>
           </div>
         </header>
 

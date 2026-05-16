@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { slideInLeft } from '@/lib/animations'
 import Button from '@/components/ui/Button'
 import type { Product } from '@/lib/constants'
+import { CONTACT_INFO } from '@/lib/constants'
 
 interface ProductInfoProps {
   product: Product
@@ -18,6 +19,13 @@ const formatPrice = (cents: number) =>
   }).format(cents / 100)
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+  const handleInquiry = () => {
+    const message = encodeURIComponent(
+      `Hello Urja Jewels, I am interested in the ${product.name}. Could you please provide more details?`
+    )
+    window.open(`${CONTACT_INFO.whatsapp}?text=${message}`, '_blank')
+  }
+
   return (
     <motion.div
       variants={slideInLeft}
@@ -47,8 +55,8 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button variant="primary" size="lg">
-          Add to Cart
+        <Button variant="primary" size="lg" onClick={handleInquiry}>
+          Enquire via WhatsApp
         </Button>
         <Link
           href="/collection"

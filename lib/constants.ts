@@ -41,6 +41,14 @@ export interface FrameAnimationState {
 // ---------------------------------------------------------------------------
 
 export const SITE_NAME = 'Urja Jewels'
+export const WHATSAPP_NUMBER = '+9779860804988'
+
+export const CONTACT_INFO = {
+  phone: '+977 9860804988',
+  email: 'concierge@urjajewels.com',
+  address: '123 Luxury Lane, New York, NY 10001',
+  whatsapp: `https://wa.me/${WHATSAPP_NUMBER.replace(/\+/g, '').replace(/\s/g, '')}`,
+}
 
 export const MARQUEE_TAGS: string[] = [
   'Crafted for Eternity',
