@@ -1,11 +1,11 @@
 import HomeClient from '@/components/home/HomeClient'
 import { getSiteContent } from '@/lib/site-content'
-import { getProducts } from '@/lib/db'
+import { getStaticProducts } from '@/lib/db'
 
 export default async function HomePage() {
   const [heroQuoteContent, allProducts] = await Promise.all([
     getSiteContent('hero_quote'),
-    getProducts(),
+    getStaticProducts(),
   ])
 
   const heroQuote = heroQuoteContent?.content || {
