@@ -35,6 +35,13 @@ export default function HomeClient({ heroQuote, featuredProducts }: HomeClientPr
 
   const handleScreenComplete = useCallback(() => {
     setLoadComplete(true)
+    // Recalculate ScrollTrigger positions after the loading screen is gone
+    // We add a small delay to ensure all images/canvas have sized themselves
+    setTimeout(() => {
+      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+        ScrollTrigger.refresh()
+      })
+    }, 500)
   }, [])
 
   return (

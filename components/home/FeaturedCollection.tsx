@@ -13,7 +13,7 @@ interface FeaturedCollectionProps {
 
 export default function FeaturedCollection({ products }: FeaturedCollectionProps) {
   return (
-    <section className="bg-ivory py-24 px-8">
+    <section className="bg-ivory py-40 px-8">
       <div className="max-w-6xl mx-auto">
         <SectionTitle
           eyebrow="Featured Collection"
