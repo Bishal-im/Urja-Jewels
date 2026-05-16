@@ -2,24 +2,16 @@ import { Product } from '@/lib/constants'
 import SectionTitle from '@/components/ui/SectionTitle'
 import GoldDivider from '@/components/ui/GoldDivider'
 import ProductCard from '@/components/home/ProductCard'
-import { useEffect, useState } from 'react'
-import { getProductsAction } from '@/app/actions/products'
 
 // Asymmetric 12-column grid column spans for featured cards (desktop)
 // Pattern: 7-5, 5-7 alternating
 const COL_SPANS = ['md:col-span-7', 'md:col-span-5', 'md:col-span-5', 'md:col-span-7']
 
-export default function FeaturedCollection() {
-  const [featured, setFeatured] = useState<Product[]>([])
+interface FeaturedCollectionProps {
+  products: Product[]
+}
 
-  useEffect(() => {
-    async function load() {
-      const all = await getProductsAction()
-      setFeatured(all.filter(p => p.featured))
-    }
-    load()
-  }, [])
-
+export default function FeaturedCollection({ products }: FeaturedCollectionProps) {
   return (
     <section className="bg-ivory py-24 px-8">
       <div className="max-w-6xl mx-auto">
@@ -34,7 +26,7 @@ export default function FeaturedCollection() {
 
         {/* Asymmetric 12-column grid — single column on mobile */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {featured.map((product, index) => (
+          {products.map((product, index) => (
             <ProductCard
               key={product.id}
               product={product}

@@ -9,9 +9,8 @@ import FeaturedCollection from '@/components/home/FeaturedCollection'
 import ProductShowcaseAnimation from '@/components/home/ProductShowcaseAnimation'
 import DiamondRingAnimation from '@/components/home/DiamondRingAnimation'
 import ParallaxQuote from '@/components/home/ParallaxQuote'
-import BrandStory from '@/components/home/BrandStory'
 import Newsletter from '@/components/home/Newsletter'
-import { MARQUEE_TAGS } from '@/lib/constants'
+import { MARQUEE_TAGS, Product } from '@/lib/constants'
 
 interface HomeClientProps {
   heroQuote: {
@@ -19,9 +18,10 @@ interface HomeClientProps {
     author: string
     imageSrc: string
   }
+  featuredProducts: Product[]
 }
 
-export default function HomeClient({ heroQuote }: HomeClientProps) {
+export default function HomeClient({ heroQuote, featuredProducts }: HomeClientProps) {
   const [loadProgress, setLoadProgress] = useState(0)
   const [loadComplete, setLoadComplete] = useState(false)
 
@@ -49,7 +49,7 @@ export default function HomeClient({ heroQuote }: HomeClientProps) {
 
         <MarqueeTicker items={MARQUEE_TAGS} />
 
-        <FeaturedCollection />
+        <FeaturedCollection products={featuredProducts} />
 
         <ProductShowcaseAnimation />
 
