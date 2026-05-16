@@ -68,7 +68,8 @@ export default function ProductShowcaseAnimation() {
       start: 'top top',
       end: `+=${window.innerHeight * 3}`,
       pin: true,
-      scrub: 0.6,
+      scrub: 0.5,
+      anticipatePin: 1,
       onUpdate: (self) => {
         const index = Math.round(self.progress * (TOTAL_FRAMES - 1))
         currentFrameRef.current = index

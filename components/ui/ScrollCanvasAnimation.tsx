@@ -118,7 +118,8 @@ export default function ScrollCanvasAnimation({
       start: 'top top',
       end: `+=${window.innerHeight * scrollDistance}`,
       pin: true,
-      scrub: 1.5,
+      scrub: 0.8, // Reduced from 1.5 for better responsiveness
+      anticipatePin: 1, // Helps prevent jumps during pinning transition
       onUpdate: (self) => {
         const index = Math.round(self.progress * (totalFrames - 1))
         currentFrameRef.current = index

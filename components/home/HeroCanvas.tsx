@@ -19,7 +19,7 @@ export default function HeroCanvas({ onLoadProgress, onLoadComplete }: HeroCanva
       totalFrames={120}
       basePath="/frames/ezgif-split"
       getFileName={getFileName}
-      scrollDistance={8}
+      scrollDistance={5}
       onLoadProgress={onLoadProgress}
       onLoadComplete={onLoadComplete}
       ariaLabel="Cinematic jewelry showcase animation"
