@@ -40,7 +40,7 @@ export async function updateSession(request: NextRequest) {
   const publicRoutes = ['/admin/login']
 
   const isProtectedRoute = protectedRoutes.some(
-    (route) => path === route || path.startsWith(route + '/')
+    (route) => (path === route || path.startsWith(route + '/')) && !publicRoutes.includes(path)
   )
   const isPublicRoute = publicRoutes.includes(path)
 
