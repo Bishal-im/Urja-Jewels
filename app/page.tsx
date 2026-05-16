@@ -14,7 +14,5 @@ export default async function HomePage() {
     imageSrc: "/frames/Gold_dome_ring/Gold_dome_ring_on_stone_202605130855_050.webp"
   }
 
-  const featuredProducts = allProducts.filter(p => p.featured)
-
-  return <HomeClient heroQuote={heroQuote} featuredProducts={featuredProducts} />
+  return <HomeClient heroQuote={heroQuote} featuredProducts={allProducts} />
 }

@@ -51,7 +51,26 @@ export default function HomeClient({ heroQuote, featuredProducts }: HomeClientPr
 
         <FeaturedCollection products={featuredProducts} />
 
+        {/* ── Transition bridge: ivory → dark ── */}
+        <div
+          style={{
+            background: 'linear-gradient(to bottom, #f9f5f0 0%, #1a1714 100%)',
+            height: '220px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            gap: '12px',
+          }}
+        >
+          <div style={{ width: '1px', height: '48px', background: 'linear-gradient(to bottom, rgba(180,150,80,0.3), rgba(212,175,55,0.7))' }} />
+          <p style={{ fontSize: '10px', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(212,175,55,0.6)' }}>
+            Explore the Craft
+          </p>
+        </div>
+
         <ProductShowcaseAnimation />
+
 
         <DiamondRingAnimation />
 
